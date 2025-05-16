@@ -1,24 +1,22 @@
-﻿namespace TP_M2I_DOTNET
+﻿using System.Threading.Tasks;
+using TP_M2I_DOTNET.ViewModels;
+
+namespace TP_M2I_DOTNET
 {
     public partial class MainPage : ContentPage
     {
-        int count = 0;
-
-        public MainPage()
+        private readonly MainPageViewModel _viewModel;
+        public MainPage(MainPageViewModel viewModel)
         {
             InitializeComponent();
+            _viewModel = viewModel;
+            BindingContext = _viewModel;
         }
 
-        private void OnCounterClicked(object? sender, EventArgs e)
+        protected override async void OnAppearing()
         {
-            count++;
-
-            if (count == 1)
-                CounterBtn.Text = $"Clicked {count} time";
-            else
-                CounterBtn.Text = $"Clicked {count} times";
-
-            SemanticScreenReader.Announce(CounterBtn.Text);
+            base.OnAppearing();
+            await _viewModel.LoadMainPageData();
         }
     }
 }
